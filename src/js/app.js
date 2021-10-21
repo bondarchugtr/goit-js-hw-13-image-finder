@@ -1,56 +1,48 @@
 import apiService from './apiService';
 import cardImage from '../tamplate/image-card.hbs';
-import cardList from '../tamplate/list-gallery.hbs';
+// import cardList from '../tamplate/list-gallery.hbs';
 import cardForm from '../tamplate/form.hbs';
 import refs from './refs.js'
 import { debounce } from 'debounce';
 
-const { main, form, btnOpenImage } = refs;
+const { main, form, btnOpenImage, galleryItem } = refs;
 renderformSearch()
 
 //form search
 function renderformSearch(form) {
     const marcup = cardForm(form)
-    main.insertAdjacentHTML("beforeend", marcup)
+    main.insertAdjacentHTML("afterbegin", marcup)
 }
 
 
 //list foto
-function renderListCard(card) {
-    const marcup = cardList(card);
-    main.insertAdjacentHTML("beforeend", marcup);
-}
+// function renderListCard(card) {
+//     const marcup = cardList(card);
+//     main.insertAdjacentHTML("beforeend", marcup);
+// }
 
 
 //foto card
 function renderFotoCard(card) {
-    const galleryItem = document.querySelector('.gallery__item')
     const marcup = cardImage(card);
-    renderListCard()
     galleryItem.insertAdjacentHTML('afterbegin', marcup)
 }
+
 //input value
 function onInputNameFoto() {
     const searchForm = document.querySelector('.search-form');
     searchForm.addEventListener('input', debounce((e) => {
-        const tags = e.target.value
-        renderCard(tags)
+        const searchQuery = e.target.value
+        renderCard(searchQuery)
     }, 500));
 }
 onInputNameFoto()
-
-function renderCard(tags, pages) {
-    apiService(tags, pages)
+let page = 1;
+function renderCard(searchQuery, page) {
+    apiService(searchQuery, page)
         .then(data => {
-            let pages = 1;
-            renderListCard()
             renderFotoCard(data)
-            const btnOpenImage = document.querySelector('.button__open')
-            btnOpenImage.addEventListener('click', el => {
-                el.preventDefault()
-                pages += 1
-                console.log(pages);
-            })
+            onBtnOpenImg()
         })
         .catch(() => {
             alert('error')
@@ -58,15 +50,14 @@ function renderCard(tags, pages) {
 }
 
 
-// function onBtnOpenImg() {
-//     const btnOpenImage = document.querySelector('.button__open')
-//     btnOpenImage.addEventListener('click', el => {
-//         el.preventDefault()
-//         if (el.target) {
-//             renderCard()
-//         }
-//     })
-// }
+function onBtnOpenImg() {
+    const btnOpenImage = document.querySelector('.button__open')
+    btnOpenImage.addEventListener('click', el => {
+        el.preventDefault()
+        page += 1
+        console.log(page);
+    })
+}
 
 
 
