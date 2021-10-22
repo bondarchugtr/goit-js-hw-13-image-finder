@@ -26,6 +26,7 @@ function renderformSearch(form) {
 function renderFotoCard(card) {
     const marcup = cardImage(card);
     galleryItem.insertAdjacentHTML('afterbegin', marcup)
+    console.log(marcup);
 }
 
 //input value
@@ -56,6 +57,7 @@ function onBtnOpenImg() {
         el.preventDefault()
         page += 1
         console.log(page);
+        renderCard()
     })
 }
 
