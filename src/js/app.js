@@ -20,25 +20,29 @@ function renderformSearch(form) {
 //     const marcup = cardList(card);
 //     main.insertAdjacentHTML("beforeend", marcup);
 // }
+let page = 1;
 
-
+let searchQuery = ''
 //foto card
 function renderFotoCard(card) {
-    const marcup = cardImage(card);
-    galleryItem.insertAdjacentHTML('afterbegin', marcup)
+    const marcup = cardImage(card.hits);
+    galleryItem.insertAdjacentHTML('beforeend', marcup)
     console.log(marcup);
 }
 
 //input value
 function onInputNameFoto() {
-    const searchForm = document.querySelector('.search-form');
-    searchForm.addEventListener('input', debounce((e) => {
-        const searchQuery = e.target.value
-        renderCard(searchQuery)
-    }, 500));
+    const searchForm = document.querySelector('form');
+    searchForm.addEventListener('submit', e => {
+        e.preventDefault()
+        page = 1;
+        searchQuery = e.currentTarget.elements[0].value;
+        renderCard(searchQuery);
+    });
 }
 onInputNameFoto()
-let page = 1;
+
+
 function renderCard(searchQuery, page) {
     apiService(searchQuery, page)
         .then(data => {
@@ -54,10 +58,10 @@ function renderCard(searchQuery, page) {
 function onBtnOpenImg() {
     const btnOpenImage = document.querySelector('.button__open')
     btnOpenImage.addEventListener('click', el => {
-        el.preventDefault()
+
         page += 1
         console.log(page);
-        renderCard()
+        renderCard(searchQuery, page)
     })
 }
 
