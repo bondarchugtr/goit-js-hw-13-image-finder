@@ -1,4 +1,3 @@
-// import { APIpexel } from './app.js'
 
 export default function apiService(searchQuery, pages) {
 
