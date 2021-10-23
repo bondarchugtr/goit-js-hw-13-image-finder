@@ -1,31 +1,72 @@
 
 li{
     list-style: none;
-    width: 640px;
 }
+
 ul{
     margin: 0;
     padding: 0;
 }
 
-.container{
-   margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+body{
+    background-color: rgb(166, 148, 216);
 }
+
+.block__form{
+    padding-bottom: 30px;
+        background-color: rgb(199, 208, 168);
+
+}
+.hidden{
+    display: none;
+}
+
+
+.search-form{
+    text-align: center;
+    padding-top: 35px;
+}
+
+.input__form{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 .gallery{
     display: flex;
     flex-wrap: wrap;
     justify-content:space-evenly;
 }
+
 .block__card{
     width: 1390;
+    text-align: center;
 }
+
 .stats{
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-top: -3px;
+    background-color: rgb(255, 255, 255);
+}
+
+.stats-item{
+    margin: 0;
+}
+
+.item{
+    margin-bottom: 25px;
 }
 
 .material-icons{
