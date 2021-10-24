@@ -90,9 +90,9 @@ function onOpenModalClick(event) {
     const openModal = document.querySelector('.js-lightbox');
     openModal.classList.add('is-open')
 
-    const instance = basicLightbox
-        .create(`<img src="${event.path[0].dataset.largeImg}" alt="${event.path[0].alt}">`)
-        .show();
+    // const instance = basicLightbox
+    //     .create(`<img src="${event.path[0].dataset.largeImg}" alt="${event.path[0].alt}">`)
+    //     .show();
 
     const modalClose = document.querySelector('[data-action="close-lightbox"]')
     window.addEventListener('keydown', (e) => {
