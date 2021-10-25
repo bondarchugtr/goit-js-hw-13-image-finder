@@ -1,13 +1,11 @@
 import apiService from './apiService';
 import cardImage from '../tamplate/image-card.hbs';
 import cardForm from '../tamplate/form.hbs';
-import modalImg from '../tamplate/modal.hbs';
 import refs from './refs.js';
 import { debounce } from 'debounce';
 import modalImage from './modal-img'
 const { main, form, btnOpenImage, galleryList, galleryContainer, body } = refs;
 renderformSearch()
-
 const searchForm = document.querySelector('form');
 let page = 1;
 let searchQuery = ''
@@ -31,9 +29,8 @@ function renderFotoCard(card) {
         btnOpenImage.classList.remove('.hidden')
         galleryList.insertAdjacentHTML('beforeend', marcup)
     }
-
-
 }
+
 
 //input value
 function onInputNameFoto() {
@@ -53,6 +50,7 @@ function renderCard(searchQuery, page) {
             renderFotoCard(data)
             onBtnOpenImg()
             remuveHidden()
+
             setTimeout(
                 () =>
                     window.scrollTo({
@@ -70,44 +68,72 @@ function onBtnOpenImg() {
     btnOpenImage.classList.remove('.hidden')
     btnOpenImage.addEventListener('click', el => {
         page += 1
-        console.log(page);
         renderCard(searchQuery, page)
     })
 }
-
 // modal
-const basicLightbox = require('basiclightbox')
-galleryContainer.addEventListener('click', onOpenModalClick)
+function onOpenImgModal(src, alt) {
+    imgModal.src = src;
+    imgModal.alt = alt;
+}
+
+const openModal = document.querySelector('.js-lightbox');
+const modalClose = document.querySelector('[data-action="close-lightbox"]');
+const imgModal = document.querySelector('img.lightbox__image');
+const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
+const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
+
+// galleryArrowLeft.addEventListener('click', onClickArrowLeft);
+galleryContainer.addEventListener('click', onOpenModalClick);
+// galleryArrowRight.addEventListener('click', onClickArrowRight);
 
 function onOpenModalClick(event) {
-    console.log(event);
-    if (event.target.nodeName !== 'IMG') {
-        return
-    } else {
-        event.preventDefault()
-    }
-    renderModalImg()
-    const openModal = document.querySelector('.js-lightbox');
-    openModal.classList.add('is-open')
-
-    // const instance = basicLightbox
-    //     .create(`<img src="${event.path[0].dataset.largeImg}" alt="${event.path[0].alt}">`)
-    //     .show();
-
-    const modalClose = document.querySelector('[data-action="close-lightbox"]')
-    window.addEventListener('keydown', (e) => {
-        openModal.classList.remove('is-open')
-    })
-
+    if (event.target.nodeName !== 'IMG') return
+    event.preventDefault()
+    onOpenImgModal(`${event.path[0].dataset.set}, ${event.path[0].alt}>`);
+    openModal.classList.add('is-open');
     modalClose.addEventListener('click', (e) => {
         openModal.classList.remove('is-open')
+        onOpenImgModal(" ", " ")
     })
+
 }
 
-function renderModalImg(modal) {
-    const marcup = modalImg(modal);
-    main.insertAdjacentHTML("beforeend", marcup)
-}
+window.addEventListener('keydown', (event) => {
+    const ESC_KEY_CODE = 'Escape';
+    if (event.code === ESC_KEY_CODE) {
+        openModal.classList.remove('is-open')
+        onOpenImgModal(" ", " ")
+    }
+    const LEFT_ARROW = 'ArrowLeft';
+    if (event.code === LEFT_ARROW) {
+        onClickArrowLeft()
+    }
+    const RIGHT_ARROW = 'ArrowRight';
+    if (event.code === RIGHT_ARROW) {
+        onClickArrowRight()
+    }
+})
+
+// function clickSearchRules(src) {
+//     const searchForEntry = gallery.indexOf(gallery.find(el => el.original === src));
+//     return searchForEntry;
+// }
+
+// function onClickArrowRight(src) {
+
+    // let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
+    // if (currentImgIndex === galleryItems.length - 1) {
+    //     currentImgIndex = -1;
+    // }
+
+    // onOpenImgModal(
+    //     galleryItems[currentImgIndex + 1].original,
+    //     galleryItems[currentImgIndex + 1].description,
+    // );
+    // console.log(currentImgIndex)
+// }
+
 
 
 

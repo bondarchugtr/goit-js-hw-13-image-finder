@@ -1,7 +1,8 @@
 {{#each this}}
 <li class='item scrollerFooter gallery__item'>
     <div class='photo-card'>
-        <img src=" {{webformatURL}}" alt='' width="{{webformatWidth}}px" height="{{webformatHeight}}px" />
+        <img src=" {{webformatURL}}" alt='{{tags}}' width="{{webformatWidth}}px" height="{{webformatHeight}}px"
+            data-set="{{largeImageURL}}" />
         <div class='stats'>
             <p class='stats-item'>
                 <i class='material-icons'>

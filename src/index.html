@@ -18,8 +18,19 @@
       </ul>
       <button type="button" class="button__open hidden"> Загрузить еще</button>
     </div>
-
   </main>
+  <div class="lightbox js-lightbox">
+    <div class="lightbox__overlay"></div>
+    <!-- <button type="button" class="lightbox__arrow lightbox__arrow-left" data-action="change-image" data-type="next"> -->
+    <!-- 👈 </button> -->
+    <!-- <button type="button" class="lightbox__arrow lightbox__arrow-right" data-action="change-image" data-type="back"> -->
+    <!-- 👉 </button> -->
+
+    <div class="lightbox__content">
+      <img class="lightbox__image" src="" alt="" />
+    </div>
+    <button type="button" class="lightbox__button" data-action="close-lightbox"></button>
+  </div>
   <script src="./index.js"></script>
 </body>
 
