@@ -4,6 +4,4 @@ export default {
     btnOpenImage: document.querySelector('.button__open'),
     galleryList: document.querySelector('.gallery'),
     galleryContainer: document.querySelector('ul.js-gallery'),
-    body: document.getElementsByTagName('body')
-
 }

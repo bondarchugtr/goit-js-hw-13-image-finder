@@ -45,7 +45,8 @@ body{
 .gallery{
     display: flex;
     flex-wrap: wrap;
-    justify-content:space-evenly;
+    justify-content:center;
+
 }
 
 .block__card{
@@ -67,6 +68,8 @@ body{
 
 .item{
     margin-bottom: 25px;
+    margin-right: 25px;
+
 }
 
 .material-icons{
@@ -149,7 +152,6 @@ body{
 .lightbox__button:focus {
   background-color: rgba(0, 0, 0, 0.5);
 }
-
 
 .lightbox__arrow{
   position: absolute;

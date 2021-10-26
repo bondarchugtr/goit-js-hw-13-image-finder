@@ -4,7 +4,7 @@ import cardForm from '../tamplate/form.hbs';
 import refs from './refs.js';
 import { debounce } from 'debounce';
 import modalImage from './modal-img'
-const { main, form, btnOpenImage, galleryList, galleryContainer, body } = refs;
+const { main, form, btnOpenImage, galleryList, galleryContainer } = refs;
 renderformSearch()
 const searchForm = document.querySelector('form');
 let page = 1;
@@ -29,8 +29,8 @@ function renderFotoCard(card) {
         btnOpenImage.classList.remove('.hidden')
         galleryList.insertAdjacentHTML('beforeend', marcup)
     }
+    skrollImgIntersectionObserver()
 }
-
 
 //input value
 function onInputNameFoto() {
@@ -50,13 +50,6 @@ function renderCard(searchQuery, page) {
             renderFotoCard(data)
             onBtnOpenImg()
             remuveHidden()
-
-            setTimeout(
-                () =>
-                    window.scrollTo({
-                        top: document.documentElement.offsetHeight,
-                        behavior: 'smooth',
-                    }), 500)
         })
         .catch(() => {
             alert('error')
@@ -64,13 +57,14 @@ function renderCard(searchQuery, page) {
 }
 // click open img
 function onBtnOpenImg() {
-    const btnOpenImage = document.querySelector('.button__open')
-    btnOpenImage.classList.remove('.hidden')
+    const btnOpenImage = document.querySelector('.button__open');
+    btnOpenImage.classList.remove('.hidden');
     btnOpenImage.addEventListener('click', el => {
         page += 1
         renderCard(searchQuery, page)
     })
 }
+
 // modal
 function onOpenImgModal(src, alt) {
     imgModal.src = src;
@@ -80,12 +74,7 @@ function onOpenImgModal(src, alt) {
 const openModal = document.querySelector('.js-lightbox');
 const modalClose = document.querySelector('[data-action="close-lightbox"]');
 const imgModal = document.querySelector('img.lightbox__image');
-const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
-const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
-
-// galleryArrowLeft.addEventListener('click', onClickArrowLeft);
 galleryContainer.addEventListener('click', onOpenModalClick);
-// galleryArrowRight.addEventListener('click', onClickArrowRight);
 
 function onOpenModalClick(event) {
     if (event.target.nodeName !== 'IMG') return
@@ -99,49 +88,84 @@ function onOpenModalClick(event) {
 
 }
 
-window.addEventListener('keydown', (event) => {
-    const ESC_KEY_CODE = 'Escape';
-    if (event.code === ESC_KEY_CODE) {
-        openModal.classList.remove('is-open')
-        onOpenImgModal(" ", " ")
-    }
-    const LEFT_ARROW = 'ArrowLeft';
-    if (event.code === LEFT_ARROW) {
-        onClickArrowLeft()
-    }
-    const RIGHT_ARROW = 'ArrowRight';
-    if (event.code === RIGHT_ARROW) {
-        onClickArrowRight()
-    }
-})
+// IntersectionObserver
+function skrollImgIntersectionObserver() {
+    const options = {
+        rootMargin: '0px',
+        threshold: 1.0
+    };
+    const observer = new IntersectionObserver(callback, options);
+    const target = document.querySelector('.gallery');
+    function callback(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.target.nextElementSibling === null) {
+                    page += 1
+                    renderCard(searchQuery, page)
+                    scrollPage()
+                }
+            }
+        });
+    };
+    const items = [...target.children];
+    items.forEach(item => observer.observe(item))
 
-// function clickSearchRules(src) {
-//     const searchForEntry = gallery.indexOf(gallery.find(el => el.original === src));
-//     return searchForEntry;
+
+
+}
+// scroll
+function scrollPage() {
+    setTimeout(
+        () =>
+            window.scrollTo({
+                top: window.pageYOffset + document.documentElement.clientHeight,
+                behavior: 'smooth',
+                block: 'end',
+            }), 1000)
+}
+
+
+// const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
+// const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
+// galleryArrowLeft.addEventListener('click', onClickArrowLeft);
+// galleryArrowRight.addEventListener('click', onClickArrowRight);
+// window.addEventListener('keydown', (event) => {
+//     const ESC_KEY_CODE = 'Escape';
+//     if (event.code === ESC_KEY_CODE) {
+//         openModal.classList.remove('is-open')
+//         onOpenImgModal(" ", " ")
+//     }
+//     const LEFT_ARROW = 'ArrowLeft';
+//     if (event.code === LEFT_ARROW) {
+//         onClickArrowLeft()
+//     }
+//     const RIGHT_ARROW = 'ArrowRight';
+//     if (event.code === RIGHT_ARROW) {
+//         onClickArrowRight()
+//     }
+// })
+
+// function onClickArrowLeft(event) {
+//     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
+//     if (currentImgIndex === 0) {
+//         currentImgIndex = galleryItems.length
+//     }
+//     onOpenImgModal(
+//         galleryItems[currentImgIndex - 1].original,
+//         galleryItems[currentImgIndex - 1].description,
+//     );
+//     console.log(currentImgIndex)
 // }
-
 // function onClickArrowRight(src) {
 
-    // let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
-    // if (currentImgIndex === galleryItems.length - 1) {
-    //     currentImgIndex = -1;
-    // }
+//     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
+//     if (currentImgIndex === galleryItems.length - 1) {
+//         currentImgIndex = -1;
+//     }
 
-    // onOpenImgModal(
-    //     galleryItems[currentImgIndex + 1].original,
-    //     galleryItems[currentImgIndex + 1].description,
-    // );
-    // console.log(currentImgIndex)
+//     // onOpenImgModal(
+//     //     galleryItems[currentImgIndex + 1].original,
+//     //     galleryItems[currentImgIndex + 1].description,
+//     // );
+//     console.log(currentImgIndex)
 // }
-
-
-
-
-// const intersectionObserver = new IntersectionObserver(function (entries) {
-//     console.log('object');
-//     if (entries[0].intersectionRatio <= 0) return;
-//     loadItems(10);
-//     console.log('Loaded new items');
-// });
-// // начать наблюдение
-// intersectionObserver.observe(document.querySelector('.scrollerFooter'));
