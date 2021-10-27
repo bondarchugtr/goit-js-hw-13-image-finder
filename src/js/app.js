@@ -3,12 +3,12 @@ import cardImage from '../tamplate/image-card.hbs';
 import cardForm from '../tamplate/form.hbs';
 import refs from './refs.js';
 import { debounce } from 'debounce';
-import modalImage from './modal-img'
 const { main, form, btnOpenImage, galleryList, galleryContainer } = refs;
 renderformSearch()
 const searchForm = document.querySelector('form');
 let page = 1;
 let searchQuery = ''
+let test = 0;
 
 function remuveHidden() {
     btnOpenImage.classList.remove('hidden')
@@ -43,6 +43,8 @@ function onInputNameFoto() {
 }
 onInputNameFoto()
 
+
+
 // render card
 function renderCard(searchQuery, page) {
     apiService(searchQuery, page)
@@ -50,6 +52,61 @@ function renderCard(searchQuery, page) {
             renderFotoCard(data)
             onBtnOpenImg()
             remuveHidden()
+
+            const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
+            const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
+            galleryArrowLeft.addEventListener('click', onClickArrowLeft);
+            galleryArrowRight.addEventListener('click', onClickArrowRight);
+
+            const imagesRef = document.querySelectorAll(".photo-card img");
+            const links = [...imagesRef].map((item) => {
+                return item.src
+            });
+
+            window.addEventListener('keydown', (event) => {
+                const ESC_KEY_CODE = 'Escape';
+                if (event.code === ESC_KEY_CODE) {
+                    openModal.classList.remove('is-open')
+                    onOpenImgModal(" ", " ")
+                }
+                const LEFT_ARROW = 'ArrowLeft';
+                if (event.code === LEFT_ARROW) {
+                    onClickArrowLeft()
+                }
+                const RIGHT_ARROW = 'ArrowRight';
+                if (event.code === RIGHT_ARROW) {
+                    onClickArrowRight()
+                }
+            })
+
+
+            // function onClickArrowLeft(event) {
+            //     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
+            //     if (currentImgIndex === 0) {
+            //         currentImgIndex = galleryItems.length
+            //     }
+            //     onOpenImgModal(
+            //         galleryItems[currentImgIndex - 1].original,
+            //         galleryItems[currentImgIndex - 1].description,
+            //     );
+            //     console.log(currentImgIndex)
+            // }
+            // function onClickArrowRight(src) {
+
+            //     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
+            //     if (currentImgIndex === galleryItems.length - 1) {
+            //         currentImgIndex = -1;
+            //     }
+            //     // onOpenImgModal(
+            //     //     galleryItems[currentImgIndex + 1].original,
+            //     //     galleryItems[currentImgIndex + 1].description,
+            //     // );
+            //     console.log(currentImgIndex)
+            // }
+
+
+
+
         })
         .catch(() => {
             alert('error')
@@ -64,6 +121,8 @@ function onBtnOpenImg() {
         renderCard(searchQuery, page)
     })
 }
+
+
 
 // modal
 function onOpenImgModal(src, alt) {
@@ -110,8 +169,6 @@ function skrollImgIntersectionObserver() {
     const items = [...target.children];
     items.forEach(item => observer.observe(item))
 
-
-
 }
 // scroll
 function scrollPage() {
@@ -125,10 +182,9 @@ function scrollPage() {
 }
 
 
-// const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
-// const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
-// galleryArrowLeft.addEventListener('click', onClickArrowLeft);
-// galleryArrowRight.addEventListener('click', onClickArrowRight);
+
+
+
 // window.addEventListener('keydown', (event) => {
 //     const ESC_KEY_CODE = 'Escape';
 //     if (event.code === ESC_KEY_CODE) {
@@ -162,7 +218,6 @@ function scrollPage() {
 //     if (currentImgIndex === galleryItems.length - 1) {
 //         currentImgIndex = -1;
 //     }
-
 //     // onOpenImgModal(
 //     //     galleryItems[currentImgIndex + 1].original,
 //     //     galleryItems[currentImgIndex + 1].description,
