@@ -43,8 +43,6 @@ function onInputNameFoto() {
 }
 onInputNameFoto()
 
-
-
 // render card
 function renderCard(searchQuery, page) {
     apiService(searchQuery, page)
@@ -52,61 +50,7 @@ function renderCard(searchQuery, page) {
             renderFotoCard(data)
             onBtnOpenImg()
             remuveHidden()
-
-            const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
-            const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
-            galleryArrowLeft.addEventListener('click', onClickArrowLeft);
-            galleryArrowRight.addEventListener('click', onClickArrowRight);
-
-            const imagesRef = document.querySelectorAll(".photo-card img");
-            const links = [...imagesRef].map((item) => {
-                return item.src
-            });
-
-            window.addEventListener('keydown', (event) => {
-                const ESC_KEY_CODE = 'Escape';
-                if (event.code === ESC_KEY_CODE) {
-                    openModal.classList.remove('is-open')
-                    onOpenImgModal(" ", " ")
-                }
-                const LEFT_ARROW = 'ArrowLeft';
-                if (event.code === LEFT_ARROW) {
-                    onClickArrowLeft()
-                }
-                const RIGHT_ARROW = 'ArrowRight';
-                if (event.code === RIGHT_ARROW) {
-                    onClickArrowRight()
-                }
-            })
-
-
-            // function onClickArrowLeft(event) {
-            //     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
-            //     if (currentImgIndex === 0) {
-            //         currentImgIndex = galleryItems.length
-            //     }
-            //     onOpenImgModal(
-            //         galleryItems[currentImgIndex - 1].original,
-            //         galleryItems[currentImgIndex - 1].description,
-            //     );
-            //     console.log(currentImgIndex)
-            // }
-            // function onClickArrowRight(src) {
-
-            //     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
-            //     if (currentImgIndex === galleryItems.length - 1) {
-            //         currentImgIndex = -1;
-            //     }
-            //     // onOpenImgModal(
-            //     //     galleryItems[currentImgIndex + 1].original,
-            //     //     galleryItems[currentImgIndex + 1].description,
-            //     // );
-            //     console.log(currentImgIndex)
-            // }
-
-
-
-
+            clickArrow()
         })
         .catch(() => {
             alert('error')
@@ -122,12 +66,73 @@ function onBtnOpenImg() {
     })
 }
 
-
-
 // modal
 function onOpenImgModal(src, alt) {
     imgModal.src = src;
     imgModal.alt = alt;
+}
+
+function clickArrow() {
+    const galleryArrowLeft = document.querySelector('.lightbox__arrow-left');
+    const galleryArrowRight = document.querySelector('.lightbox__arrow-right');
+    galleryArrowLeft.addEventListener('click', onClickArrowLeft);
+    galleryArrowRight.addEventListener('click', onClickArrowRight);
+
+
+    const imagesRef = document.querySelectorAll(".photo-card img");
+    const linksSrc = [...imagesRef].map((item) => {
+        return item.src
+    });
+    const linksDataset = [...imagesRef].map((item) => {
+        return item.dataset.set
+    });
+
+    window.addEventListener('keydown', (event) => {
+        const ESC_KEY_CODE = 'Escape';
+        if (event.code === ESC_KEY_CODE) {
+            openModal.classList.remove('is-open')
+            onOpenImgModal(" ", " ")
+        }
+        const LEFT_ARROW = 'ArrowLeft';
+        if (event.code === LEFT_ARROW) {
+            onClickArrowLeft()
+        }
+        const RIGHT_ARROW = 'ArrowRight';
+        if (event.code === RIGHT_ARROW) {
+            onClickArrowRight()
+        }
+    })
+
+    const list = document.querySelector('.gallery');
+    list.addEventListener('click', targetList)
+
+    let valueIndex = ""
+
+    function targetList(evt) {
+        const value = evt.target.src
+        valueIndex = linksSrc.indexOf(value)
+    }
+
+    function onClickArrowLeft(event) {
+        if (valueIndex === 0) {
+            return
+        }
+        onOpenImgModal(
+            linksDataset[valueIndex -= 1],
+        )
+
+        console.log(valueIndex);
+    }
+
+    function onClickArrowRight(src) {
+        if (valueIndex === linksSrc.length - 1) {
+            return
+        }
+        onOpenImgModal(
+            linksDataset[valueIndex += 1],
+        )
+        console.log(valueIndex);
+    }
 }
 
 const openModal = document.querySelector('.js-lightbox');
@@ -144,7 +149,6 @@ function onOpenModalClick(event) {
         openModal.classList.remove('is-open')
         onOpenImgModal(" ", " ")
     })
-
 }
 
 // IntersectionObserver
@@ -182,45 +186,3 @@ function scrollPage() {
 }
 
 
-
-
-
-// window.addEventListener('keydown', (event) => {
-//     const ESC_KEY_CODE = 'Escape';
-//     if (event.code === ESC_KEY_CODE) {
-//         openModal.classList.remove('is-open')
-//         onOpenImgModal(" ", " ")
-//     }
-//     const LEFT_ARROW = 'ArrowLeft';
-//     if (event.code === LEFT_ARROW) {
-//         onClickArrowLeft()
-//     }
-//     const RIGHT_ARROW = 'ArrowRight';
-//     if (event.code === RIGHT_ARROW) {
-//         onClickArrowRight()
-//     }
-// })
-
-// function onClickArrowLeft(event) {
-//     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
-//     if (currentImgIndex === 0) {
-//         currentImgIndex = galleryItems.length
-//     }
-//     onOpenImgModal(
-//         galleryItems[currentImgIndex - 1].original,
-//         galleryItems[currentImgIndex - 1].description,
-//     );
-//     console.log(currentImgIndex)
-// }
-// function onClickArrowRight(src) {
-
-//     let currentImgIndex = clickSearchRules(imgModal.getAttribute('src'));
-//     if (currentImgIndex === galleryItems.length - 1) {
-//         currentImgIndex = -1;
-//     }
-//     // onOpenImgModal(
-//     //     galleryItems[currentImgIndex + 1].original,
-//     //     galleryItems[currentImgIndex + 1].description,
-//     // );
-//     console.log(currentImgIndex)
-// }
