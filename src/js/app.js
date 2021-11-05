@@ -8,7 +8,6 @@ renderformSearch();
 const searchForm = document.querySelector("form");
 let page = 1;
 let searchQuery = "";
-let test = 0;
 
 function remuveHidden() {
   btnOpenImage.classList.remove("hidden");
@@ -54,7 +53,6 @@ function renderCard(searchQuery, page) {
       renderFotoCard(data);
       onBtnOpenImg();
       remuveHidden();
-      //clickArrow();
     })
     .catch(() => {
       alert("error");
@@ -110,7 +108,24 @@ function getSrc(src) {
     return item.dataset.set;
   });
   valueIndex = linksSrc.findIndex((item) => item === src);
+
 }
+
+window.addEventListener('keydown', (event) => {
+  const ESC_KEY_CODE = 'Escape';
+  if (event.code === ESC_KEY_CODE) {
+    openModal.classList.remove('is-open')
+    onOpenImgModal(" ", " ")
+  }
+  const LEFT_ARROW = 'ArrowLeft';
+  if (event.code === LEFT_ARROW) {
+    onClickArrowLeft()
+  }
+  const RIGHT_ARROW = 'ArrowRight';
+  if (event.code === RIGHT_ARROW) {
+    onClickArrowRight()
+  }
+})
 
 function onOpenModalClick(event) {
   const { target } = event;
